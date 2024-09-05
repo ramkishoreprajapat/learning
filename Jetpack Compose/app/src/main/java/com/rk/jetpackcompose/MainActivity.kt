@@ -51,7 +51,7 @@ class MainActivity : ComponentActivity() {
                     Box(
                         modifier = Modifier.padding(innerPadding)
                     ) {
-                        CircularImage()
+                        LaunchEffectComposable()
                     }
                 }
             }
@@ -121,26 +121,26 @@ fun CircularImage(modifier: Modifier = Modifier) {
             .border(2.dp, Color.Gray, CircleShape))
 }
 
-@Preview(showBackground = true)
+//@Preview(showBackground = true)
 @Composable
 fun CircularImagePreview() {
     CircularImage()
 }
 
-@Preview(showBackground = true)
+//@Preview(showBackground = true)
 @Composable
 fun ClickableViewPreview() {
     ClickableView()
 }
 
 
-@Preview(showBackground = true)
+//@Preview(showBackground = true)
 @Composable
 fun TextInputPreview() {
     TextInput()
 }
 
-@Preview(showBackground = true, widthDp = 180, heightDp = 300)
+//@Preview(showBackground = true, widthDp = 180, heightDp = 300)
 @Composable
 fun ListItemsPreview() {
     Column {
