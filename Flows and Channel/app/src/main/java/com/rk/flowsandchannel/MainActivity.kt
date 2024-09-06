@@ -28,6 +28,7 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
+import kotlin.system.measureTimeMillis
 
 class MainActivity : ComponentActivity() {
     //Channel - Channel is basically hot. that means it providing continuously data. if consumer consume or not.
@@ -40,7 +41,8 @@ class MainActivity : ComponentActivity() {
 
         //simpleFlowUse()
         //flowFunctions()
-        flowMapAndFilterBeforeCollect()
+        //flowMapAndFilterBeforeCollect()
+        flowBuffer()
 
         enableEdgeToEdge()
         setContent {
@@ -131,6 +133,25 @@ class MainActivity : ComponentActivity() {
                 Log.d("TAG", "flowFilterBeforeCollect: $it")
             }
         }
+    }
+
+    private fun flowBuffer() {
+
+        GlobalScope.launch {
+            val time = measureTimeMillis {
+                val data = producerFlow()
+                data
+                    .buffer(3)// Comment this line and check time difference
+                    .collect {
+                    delay(1500)
+                    Log.d("TAG", "flowBuffer: $it")
+                }
+
+            }
+            Log.d("TAG", "flowBuffer Time: $time")
+        }
+
+
     }
 
 }
