@@ -20,7 +20,12 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
@@ -31,17 +36,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         /*channelProducer()
           channelConsumer()*/
-        val job = GlobalScope.launch {
-            val data : Flow<Int> = producerFlow()
-            data.collect {
-                Log.d("TAG", "onCreate: $it")
-            }
-        }
 
-        GlobalScope.launch {
-            delay(2500)
-            job.cancel()
-        }
+        //simpleFlowUse()
+        flowFunctions()
 
         enableEdgeToEdge()
         setContent {
@@ -72,11 +69,53 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private fun producerFlow()= flow {
-        val list = listOf(1,2,3,4,5)
+    private fun producerFlow() = flow {
+        val list = listOf(1, 2, 3, 4, 5)
         list.forEach {
             delay(1000)
             emit(it)
+        }
+    }
+
+    private fun simpleFlowUse() {
+        val job = GlobalScope.launch {
+            val data: Flow<Int> = producerFlow()
+            data.collect {
+                Log.d("TAG", "onCreate: $it")
+            }
+        }
+
+        //Flow canceling through coroutine
+        GlobalScope.launch {
+            delay(2500)
+            job.cancel()
+        }
+    }
+
+    private fun flowFunctions() {
+        GlobalScope.launch(Dispatchers.Main) {
+            producerFlow()
+                .onStart {
+                    // it will call when flow started
+                    Log.d("TAG", "flowFunctions: onStart")
+                }.map {
+                    // it will call before each time when flow consume and we can modify before collect.
+                    it * 2
+                }.filter {
+                    // it will call before each time when flow consume and we can filter data.
+                    it < 6
+                }
+                .onCompletion {
+                    // it will call when flow completed
+                    Log.d("TAG", "flowFunctions: onCompletion")
+                }
+                .onEach {
+                    // it will call before each time when flow consume
+                    Log.d("TAG", "flowFunctions: onEach - $it")
+                }.collect {
+                    // it will call when flow consume
+                    Log.d("TAG", "flowFunctions: collect ${it.toString()}")
+                }
         }
     }
 
