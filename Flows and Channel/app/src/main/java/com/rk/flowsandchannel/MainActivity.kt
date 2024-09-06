@@ -31,11 +31,27 @@ class MainActivity : ComponentActivity() {
                     Box(
                         modifier = Modifier.padding(innerPadding)
                     ) {
+                        channelProducer()
+                        channelConsumer()
                     }
                 }
             }
         }
     }
 
+    private fun channelProducer() {
+        CoroutineScope(Dispatchers.Main).launch {
+            channel.send(1)
+            channel.send(2)
+        }
+    }
+
+    private fun channelConsumer() {
+        CoroutineScope(Dispatchers.Main).launch {
+
+            Log.d("TAG", "channelConsumer: " + channel.receive().toString())
+            Log.d("TAG", "channelConsumer: " + channel.receive().toString())
+        }
+    }
 
 }
