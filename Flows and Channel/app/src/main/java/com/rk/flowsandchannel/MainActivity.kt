@@ -20,6 +20,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.buffer
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.filter
@@ -38,14 +39,6 @@ class MainActivity : ComponentActivity() {
     var channel = Channel<Int>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        /*channelProducer()
-          channelConsumer()*/
-
-        //simpleFlowUse()
-        //flowFunctions()
-        //flowMapAndFilterBeforeCollect()
-        //flowBuffer()
-        flowOnForThreadManage()
 
         enableEdgeToEdge()
         setContent {
@@ -59,6 +52,16 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+
+        /*channelProducer()
+         channelConsumer()*/
+
+        //simpleFlowUse()
+        //flowFunctions()
+        //flowMapAndFilterBeforeCollect()
+        //flowBuffer()
+        //flowOnForThreadManage()
+        sharedFlowUse()
     }
 
     private fun channelProducer() {
@@ -189,11 +192,41 @@ class MainActivity : ComponentActivity() {
                             "flowOnForThreadManage: Collect Thread - ${Thread.currentThread().name}"
                         )
                     }
-            } catch (e: Exception){
+            } catch (e: Exception) {
                 Log.d(
                     "TAG",
                     "flowOnForThreadManage: Exception - ${e.message}"
                 )
+            }
+        }
+    }
+
+    private fun sharedProducerFlowList(): Flow<Int> {
+        // Shared flow is hot in flow.
+        val mutableSharedFlow = MutableSharedFlow<Int>()
+        GlobalScope.launch {
+            val list = listOf(1, 2, 3, 4, 5)
+            list.forEach {
+                delay(1000)
+                mutableSharedFlow.emit(it)
+            }
+        }
+
+        return mutableSharedFlow
+    }
+
+    private fun sharedFlowUse() {
+        val result = sharedProducerFlowList()
+        GlobalScope.launch(Dispatchers.Main) {
+            result.collect {
+                Log.d("TAG", "sharedFlowUse 1 : $it")
+            }
+        }
+
+        GlobalScope.launch(Dispatchers.Main) {
+            delay(2500)
+            result.collect {
+                Log.d("TAG", "sharedFlowUse 2 : $it")
             }
         }
     }
