@@ -20,6 +20,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.buffer
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
@@ -38,7 +39,8 @@ class MainActivity : ComponentActivity() {
           channelConsumer()*/
 
         //simpleFlowUse()
-        flowFunctions()
+        //flowFunctions()
+        flowMapAndFilterBeforeCollect()
 
         enableEdgeToEdge()
         setContent {
@@ -116,6 +118,18 @@ class MainActivity : ComponentActivity() {
                     // it will call when flow consume
                     Log.d("TAG", "flowFunctions: collect ${it.toString()}")
                 }
+        }
+    }
+
+    private fun flowMapAndFilterBeforeCollect() {
+        GlobalScope.launch(Dispatchers.Main) {
+            getNotes().map {
+                Notes(it.id, it.isActivate, it.title.uppercase(), it.description)
+            }.filter {
+                it.isActivate
+            }.collect {
+                Log.d("TAG", "flowFilterBeforeCollect: $it")
+            }
         }
     }
 
