@@ -204,6 +204,7 @@ class MainActivity : ComponentActivity() {
     private fun sharedProducerFlowList(): Flow<Int> {
         // Shared flow is hot in flow.
         val mutableSharedFlow = MutableSharedFlow<Int>()
+//        val mutableSharedFlow = MutableSharedFlow<Int>(replay = 1) // use replay to store last value
         GlobalScope.launch {
             val list = listOf(1, 2, 3, 4, 5)
             list.forEach {
