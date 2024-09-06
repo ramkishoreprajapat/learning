@@ -21,6 +21,7 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.buffer
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
@@ -75,12 +76,19 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private fun producerFlow() = flow {
-        val list = listOf(1, 2, 3, 4, 5)
-        list.forEach {
-            delay(1000)
-            Log.d("TAG", "Emitter Thread - ${Thread.currentThread().name}")
-            emit(it)
+    private fun producerFlow(): Flow<Int> {
+        return flow {
+            val list = listOf(1, 2, 3, 4, 5)
+            list.forEach {
+                delay(1000)
+                Log.d("TAG", "Emitter Thread - ${Thread.currentThread().name}")
+                emit(it)
+                //throw Exception("Error in emit") //it will call when flow Exception and we can emit our value. Uncomment and test it.
+            }
+        }.catch {
+            //it will call when flow Exception and we can emit our value
+            Log.d("TAG", "producerFlow Exception: ${it.message}")
+            emit(-1)
         }
     }
 
@@ -159,26 +167,34 @@ class MainActivity : ComponentActivity() {
     private fun flowOnForThreadManage() {
         //Collect will be called in Main thread
         GlobalScope.launch(Dispatchers.Main) {
-            producerFlow().map {
-                delay(1000)
-                Log.d(
-                    "TAG",
-                    "flowOnForThreadManage: Map Thread - ${Thread.currentThread().name}"
-                )
-            }.filter {
-                delay(500)
-                Log.d(
-                    "TAG",
-                    "flowOnForThreadManage: Filter Thread - ${Thread.currentThread().name}"
-                )
-                it < 3
-            }.flowOn(Dispatchers.IO) //Above map and filter will be called on IO thread - It work like up steam / bottom to top
-                .collect {
+            try {
+                producerFlow().map {
+                    delay(1000)
                     Log.d(
                         "TAG",
-                        "flowOnForThreadManage: Collect Thread - ${Thread.currentThread().name}"
+                        "flowOnForThreadManage: Map Thread - ${Thread.currentThread().name}"
                     )
+                }.filter {
+                    delay(500)
+                    Log.d(
+                        "TAG",
+                        "flowOnForThreadManage: Filter Thread - ${Thread.currentThread().name}"
+                    )
+                    it < 3
                 }
+                    .flowOn(Dispatchers.IO) //Above map and filter will be called on IO thread - It work like up steam / bottom to top
+                    .collect {
+                        Log.d(
+                            "TAG",
+                            "flowOnForThreadManage: Collect Thread - ${Thread.currentThread().name}"
+                        )
+                    }
+            } catch (e: Exception){
+                Log.d(
+                    "TAG",
+                    "flowOnForThreadManage: Exception - ${e.message}"
+                )
+            }
         }
     }
 
