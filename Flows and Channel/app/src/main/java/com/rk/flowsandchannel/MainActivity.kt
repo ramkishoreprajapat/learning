@@ -23,6 +23,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.buffer
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
@@ -42,7 +43,8 @@ class MainActivity : ComponentActivity() {
         //simpleFlowUse()
         //flowFunctions()
         //flowMapAndFilterBeforeCollect()
-        flowBuffer()
+        //flowBuffer()
+        flowOnForThreadManage()
 
         enableEdgeToEdge()
         setContent {
@@ -77,12 +79,13 @@ class MainActivity : ComponentActivity() {
         val list = listOf(1, 2, 3, 4, 5)
         list.forEach {
             delay(1000)
+            Log.d("TAG", "Emitter Thread - ${Thread.currentThread().name}")
             emit(it)
         }
     }
 
     private fun simpleFlowUse() {
-        val job = GlobalScope.launch {
+        val job = GlobalScope.launch(Dispatchers.Main) {
             val data: Flow<Int> = producerFlow()
             data.collect {
                 Log.d("TAG", "onCreate: $it")
@@ -90,7 +93,7 @@ class MainActivity : ComponentActivity() {
         }
 
         //Flow canceling through coroutine
-        GlobalScope.launch {
+        GlobalScope.launch(Dispatchers.Main) {
             delay(2500)
             job.cancel()
         }
@@ -137,21 +140,46 @@ class MainActivity : ComponentActivity() {
 
     private fun flowBuffer() {
 
-        GlobalScope.launch {
+        GlobalScope.launch(Dispatchers.Main) {
             val time = measureTimeMillis {
                 val data = producerFlow()
                 data
                     .buffer(3)// Comment this line and check time difference
                     .collect {
-                    delay(1500)
-                    Log.d("TAG", "flowBuffer: $it")
-                }
+                        delay(1500)
+                        Log.d("TAG", "flowBuffer: $it")
+                    }
 
             }
             Log.d("TAG", "flowBuffer Time: $time")
         }
 
+    }
 
+    private fun flowOnForThreadManage() {
+        //Collect will be called in Main thread
+        GlobalScope.launch(Dispatchers.Main) {
+            producerFlow().map {
+                delay(1000)
+                Log.d(
+                    "TAG",
+                    "flowOnForThreadManage: Map Thread - ${Thread.currentThread().name}"
+                )
+            }.filter {
+                delay(500)
+                Log.d(
+                    "TAG",
+                    "flowOnForThreadManage: Filter Thread - ${Thread.currentThread().name}"
+                )
+                it < 3
+            }.flowOn(Dispatchers.IO) //Above map and filter will be called on IO thread - It work like up steam / bottom to top
+                .collect {
+                    Log.d(
+                        "TAG",
+                        "flowOnForThreadManage: Collect Thread - ${Thread.currentThread().name}"
+                    )
+                }
+        }
     }
 
 }
