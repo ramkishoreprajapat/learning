@@ -3,6 +3,7 @@ package com.rk.junittesting
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import com.google.gson.JsonSyntaxException
+import com.rk.junittesting.room.Quote
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import java.io.FileNotFoundException
@@ -46,16 +47,16 @@ class QuoteManagerTest {
         val quoteManager = QuoteManager()
         quoteManager.populateQuotes(
             arrayOf(
-                Quote("This is quote 1", "1"),
-                Quote("This is quote 2", "2"),
-                Quote("This is quote 3", "3"),
+                Quote(1,"This is quote 1", "smith"),
+                Quote(2,"This is quote 2", "john"),
+                Quote(3,"This is quote 3", "rock"),
                 )
         )
 
         //Act
         val quote = quoteManager.getPreviousQuote()
         //Assert
-        assertEquals("1", quote.author)
+        assertEquals(1, quote.id)
 
     }
 
@@ -65,16 +66,16 @@ class QuoteManagerTest {
         val quoteManager = QuoteManager()
         quoteManager.populateQuotes(
             arrayOf(
-                Quote("This is quote 1", "1"),
-                Quote("This is quote 2", "2"),
-                Quote("This is quote 3", "3"),
+                Quote(1,"This is quote 1", "smith"),
+                Quote(2,"This is quote 2", "john"),
+                Quote(3,"This is quote 3", "rock"),
             )
         )
 
         //Act
         val quote = quoteManager.getNextQuote()
         //Assert
-        assertEquals("2", quote.author)
+        assertEquals(2, quote.id)
 
     }
 }

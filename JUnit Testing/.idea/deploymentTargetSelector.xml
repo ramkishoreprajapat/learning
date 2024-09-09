@@ -8,7 +8,16 @@
       <SelectionState runConfigName="NoteActivityTest">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="testSharedButton_expectedIntentChooser()">
+      <SelectionState runConfigName="QuoteManagerTest">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="insertQuote_expectedSingleQuote()">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="QuotesDaoTest">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="deleteQuote_expectedNoResults()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>

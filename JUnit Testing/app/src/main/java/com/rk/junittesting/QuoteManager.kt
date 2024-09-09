@@ -2,6 +2,7 @@ package com.rk.junittesting
 
 import android.content.Context
 import com.google.gson.Gson
+import com.rk.junittesting.room.Quote
 
 class QuoteManager {
     var quoteList = emptyArray<Quote>()

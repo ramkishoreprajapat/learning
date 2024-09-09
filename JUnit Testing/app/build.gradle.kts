@@ -72,8 +72,16 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.intents)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
+    androidTestImplementation(libs.androidx.room.arch)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(libs.retrofit.convertor.gson)
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    annotationProcessor(libs.androidx.room.compiler)
+    testImplementation(libs.androidx.room.testing)
+    androidTestImplementation(libs.androidx.room.testing)
+    testImplementation(libs.androidx.room.arch)
+    kapt(libs.androidx.room.compiler)
 
 }
