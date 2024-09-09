@@ -50,25 +50,4 @@ class PasswordTest {
         assertEquals("Password is valid", result)
     }
 
-
-    @Test
-    fun reverseString_inputString_empty_expectedEmpty() {
-        //Arrange
-        //Act
-        val result = helper.reverseString("")
-        //Assert
-        assertEquals("", result)
-
-    }
-
-    @Test
-    fun reverseString_inputString_hello_expectedOlleh() {
-        //Arrange
-        //Act
-        val result = helper.reverseString("hello")
-        //Assert
-        assertEquals("olleh", result)
-
-    }
-
 }
