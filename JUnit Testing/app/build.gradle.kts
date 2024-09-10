@@ -65,17 +65,21 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.retrofit.convertor.gson)
     testImplementation(libs.junit)
     testImplementation(libs.junit.junit)
     androidTestImplementation(libs.androidx.junit)
+
+    //Espresso
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.espresso.intents)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
     androidTestImplementation(libs.androidx.room.arch)
+
+    //Room
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-    implementation(libs.retrofit.convertor.gson)
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
     annotationProcessor(libs.androidx.room.compiler)
@@ -83,5 +87,10 @@ dependencies {
     androidTestImplementation(libs.androidx.room.testing)
     testImplementation(libs.androidx.room.arch)
     kapt(libs.androidx.room.compiler)
+
+    //Mockito
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.mockito.kotlin)
+
 
 }
