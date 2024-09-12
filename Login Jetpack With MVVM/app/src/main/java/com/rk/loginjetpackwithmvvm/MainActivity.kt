@@ -9,9 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
-import com.rk.loginjetpackwithmvvm.screens.unauthenticated.LoginScreen
-import com.rk.loginjetpackwithmvvm.screens.unauthenticated.OnBoardingScreen
-import com.rk.loginjetpackwithmvvm.screens.unauthenticated.SignUpScreen
+import com.rk.loginjetpackwithmvvm.navigation.AppRoute
 import com.rk.loginjetpackwithmvvm.ui.theme.LoginJetpackWithMVVMTheme
 
 class MainActivity : ComponentActivity() {
@@ -24,7 +22,7 @@ class MainActivity : ComponentActivity() {
                     Box(
                         modifier = Modifier.padding(innerPadding)
                     ) {
-                        OnBoardingScreen()
+                        AppRoute()
                     }
                 }
             }
