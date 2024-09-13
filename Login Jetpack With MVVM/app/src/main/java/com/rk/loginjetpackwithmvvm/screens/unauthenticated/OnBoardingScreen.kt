@@ -89,8 +89,7 @@ fun OnBoardingScreen(navController: NavHostController) {
                     onClick = {
                         navController.navigate("$signUpScreen/true")
                     },
-                    interactionSource = remember { MutableInteractionSource() },
-                    indication = rememberRipple()
+
                 ),) {
                     Text(
                         text = stringResource(R.string.register),
