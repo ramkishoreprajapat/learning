@@ -13,6 +13,8 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -29,15 +31,21 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.rk.loginjetpackwithmvvm.R
 import com.rk.loginjetpackwithmvvm.components.CustomElevatedButton
 import com.rk.loginjetpackwithmvvm.components.CustomOutlinedTextField
 import com.rk.loginjetpackwithmvvm.components.SocialTab
+import com.rk.loginjetpackwithmvvm.data.User
 import com.rk.loginjetpackwithmvvm.navigation.loginScreen
+import com.rk.loginjetpackwithmvvm.viewModel.SignUpViewModel
 
 @Composable
 fun SignUpScreen(navController: NavHostController, isFromOnBoarding: Boolean) {
+    val signUpViewModel : SignUpViewModel = hiltViewModel()
+    val user: State<User> = signUpViewModel.user.collectAsState()
+
     val email = rememberSaveable { mutableStateOf("") }
     val password = rememberSaveable { mutableStateOf("") }
     val confirmPassword = rememberSaveable { mutableStateOf("") }

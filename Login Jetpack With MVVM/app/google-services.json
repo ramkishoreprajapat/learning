@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "883370172089",
+    "project_id": "login-jetpack-with-mvvm",
+    "storage_bucket": "login-jetpack-with-mvvm.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:883370172089:android:684e989b42ed6ca1ba4568",
+        "android_client_info": {
+          "package_name": "com.rk.loginjetpackwithmvvm"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDf13oU-mVaXz0RgIlMDyusWMs3zYdnpGs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
