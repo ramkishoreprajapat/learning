@@ -1,6 +1,5 @@
 package com.rk.loginjetpackwithmvvm.screens.unauthenticated
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -13,8 +12,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -37,18 +34,20 @@ import com.rk.loginjetpackwithmvvm.R
 import com.rk.loginjetpackwithmvvm.components.CustomElevatedButton
 import com.rk.loginjetpackwithmvvm.components.CustomOutlinedTextField
 import com.rk.loginjetpackwithmvvm.components.SocialTab
-import com.rk.loginjetpackwithmvvm.data.User
 import com.rk.loginjetpackwithmvvm.navigation.loginScreen
 import com.rk.loginjetpackwithmvvm.viewModel.SignUpViewModel
+import com.rk.loginjetpackwithmvvm.viewModel.SnakeBarViewModel
 
 @Composable
 fun SignUpScreen(navController: NavHostController, isFromOnBoarding: Boolean) {
+
     val signUpViewModel : SignUpViewModel = hiltViewModel()
-    val user: State<User> = signUpViewModel.user.collectAsState()
+    val snakeBarViewModel: SnakeBarViewModel = hiltViewModel()
 
     val email = rememberSaveable { mutableStateOf("") }
     val password = rememberSaveable { mutableStateOf("") }
     val confirmPassword = rememberSaveable { mutableStateOf("") }
+
     //Full Screen Content
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
@@ -118,7 +117,8 @@ fun SignUpScreen(navController: NavHostController, isFromOnBoarding: Boolean) {
             Spacer(modifier = Modifier.height(30.dp))
             //Sign Up Button
             CustomElevatedButton(text = stringResource(R.string.sign_up),
-                onClick = { checkValidation() })
+                onClick = {
+                    signUpViewModel.registrationValidationCheck(email.value, password.value, confirmPassword.value, snakeBarViewModel) })
             Spacer(modifier = Modifier.height(10.dp))
             //Already an account
             Text(
@@ -147,10 +147,6 @@ fun SignUpScreen(navController: NavHostController, isFromOnBoarding: Boolean) {
             SocialTab()
         }
     }
-}
-
-private fun checkValidation() {
-    Log.d("TAG", "Validation checking...")
 }
 
 @Preview(showBackground = true)

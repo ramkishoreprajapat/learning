@@ -1,4 +1,4 @@
-package com.rk.jetpackwithmvvm.repositories
+package com.rk.loginjetpackwithmvvm.repositories
 
 import com.rk.loginjetpackwithmvvm.api.AuthenticationApi
 import com.rk.loginjetpackwithmvvm.data.User

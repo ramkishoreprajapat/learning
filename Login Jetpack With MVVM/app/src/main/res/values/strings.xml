@@ -22,5 +22,6 @@
     <string name="forget_password">Forget password</string>
     <string name="provide_your_account_email">Provide your account\'s email for which you want to reset your password!</string>
     <string name="submit">Submit</string>
+    <string name="viewmodel_message">Message from ViewModel</string>
 
 </resources>
