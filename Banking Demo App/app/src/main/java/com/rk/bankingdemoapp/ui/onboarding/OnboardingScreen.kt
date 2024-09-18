@@ -22,6 +22,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,6 +35,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.rk.bankingdemoapp.R
 import com.rk.bankingdemoapp.ui.components.PrimaryButton
+import com.rk.bankingdemoapp.ui.components.SecondaryButton
 import com.rk.bankingdemoapp.ui.components.TextBtn
 import kotlinx.coroutines.launch
 
@@ -43,7 +45,10 @@ fun OnboardingScreen() {
 }
 
 @Composable
-fun OnBoardingScreenUI() {
+fun OnBoardingScreenUI(
+    onIntent: (intent: OnboardingIntent) -> Unit = {},
+    onGoToLogin: () -> Unit = {},
+    onGoToSignUp: () -> Unit = {}) {
     BoxWithConstraints(
         Modifier
             .fillMaxSize()
@@ -134,7 +139,31 @@ fun OnBoardingScreenUI() {
 
                         }
                     } else {
+                        LaunchedEffect(Unit) {
+                            onIntent(OnboardingIntent.CompleteOnboarding)
+                        }
 
+                        Box(Modifier.padding(horizontal = 24.dp)) {
+                            PrimaryButton(
+                                text = stringResource(R.string.create_account),
+                                onClick = {
+                                    onGoToSignUp()
+                                },
+                                modifier = Modifier.fillMaxWidth(),
+                            )
+                        }
+
+                        Spacer(Modifier.height(16.dp))
+
+                        Box(Modifier.padding(horizontal = 24.dp)) {
+                            SecondaryButton(
+                                onClick = {
+                                onGoToLogin()
+                                }, modifier = Modifier.fillMaxWidth(),
+                                text = stringResource(R.string.login_now)
+                            )
+                        }
+                        Spacer(Modifier.height(40.dp))
                     }
                 }
             }

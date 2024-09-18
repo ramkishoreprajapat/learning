@@ -1,5 +1,6 @@
 package com.rk.bankingdemoapp.ui.app_host
 
+import com.rk.bankingdemoapp.ui.core.resources.UiText
 import com.rk.bankingdemoapp.ui.navigation.model.ConditionalNavigation
 
 // Global app state, can include loading state, error state, etc.
@@ -9,7 +10,7 @@ sealed class AppState {
     data class Ready(
         val conditionalNavigation: ConditionalNavigation,
         val requiredUnlock: Boolean = false
-    ): AppState()
+    ) : AppState()
 
-    data class InitFailure(val error: Throwable): AppState()
+    data class InitFailure(val error: UiText) : AppState()
 }

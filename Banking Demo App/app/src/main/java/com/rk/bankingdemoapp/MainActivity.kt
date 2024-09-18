@@ -14,6 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.rk.bankingdemoapp.ui.app_host.AppContainerScreen
 import com.rk.bankingdemoapp.ui.app_host.AppLoadingScreen
 import com.rk.bankingdemoapp.ui.theme.BankingDemoAppTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,7 +32,7 @@ class MainActivity : ComponentActivity() {
                         .fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    AppLoadingScreen()
+                    AppContainerScreen()
                 }
             }
         }
