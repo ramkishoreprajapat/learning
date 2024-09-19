@@ -1,0 +1,1 @@
+E:\G\app store\kotlin\MovieApp-master\buildSrc\build\classes\kotlin\main\BuildTypes.class;E:\G\app store\kotlin\MovieApp-master\buildSrc\build\classes\kotlin\main\ComposeOptions.class;E:\G\app store\kotlin\MovieApp-master\buildSrc\build\classes\kotlin\main\ConfigData.class
