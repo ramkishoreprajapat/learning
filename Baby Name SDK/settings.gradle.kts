@@ -21,4 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Baby Name SDK"
 include(":app")
- 
+include(":Unqiue Baby Names")
