@@ -8,7 +8,8 @@ espressoCore = "3.6.1"
 lifecycleRuntimeKtx = "2.8.6"
 activityCompose = "1.9.2"
 composeBom = "2024.04.01"
-uniqueBabyName = "0.0.1"
+uniqueBabyNameLocal = "0.0.4"
+uniqueBabyName = "0.0.4"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -25,7 +26,8 @@ androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-toolin
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
-unique-baby-name = { group = "com.github.ramkishoreprajapat", name = "Unique-Baby-Names", version.ref = "uniqueBabyName" }
+unique-baby-name-local = { group = "com.github.ramkishoreprajapat", name = "uniquebabynamelocal", version.ref = "uniqueBabyNameLocal" }
+unique-baby-name = { group = "com.github.ramkishoreprajapat", name = "uniquebabyname", version.ref = "uniqueBabyName" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
