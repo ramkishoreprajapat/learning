@@ -37,7 +37,6 @@ import com.rk.bankingdemoapp.ui.app_host.host_utils.ScopedSnackBarState
 import com.rk.bankingdemoapp.ui.app_host.host_utils.LocalScopedSnackbarState
 import com.rk.bankingdemoapp.ui.components.DotsProgressIndicator
 import com.rk.bankingdemoapp.ui.components.snackbar.ResultSnackBar
-import com.rk.bankingdemoapp.ui.core.permission.PermissionHelper
 import com.rk.bankingdemoapp.ui.navigation.AppNavHost
 import com.rk.bankingdemoapp.ui.theme.primaryFontFamily
 import javax.inject.Inject

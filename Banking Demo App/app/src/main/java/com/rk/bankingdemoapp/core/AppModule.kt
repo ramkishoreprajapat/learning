@@ -1,6 +1,8 @@
 package com.rk.bankingdemoapp.core
 
 import com.rk.bankingdemoapp.data.app.AppSettingsRepository
+import com.rk.bankingdemoapp.domain.features.login.CheckIfLoggedInUseCase
+import com.rk.bankingdemoapp.domain.features.login.LoginRepository
 import com.rk.bankingdemoapp.ui.core.permission.PermissionHelper
 import dagger.Module
 import dagger.Provides
@@ -15,5 +17,11 @@ object HiltModule {
     @Singleton
     fun providePermissionHelper(appSettings: AppSettingsRepository): PermissionHelper {
         return PermissionHelper(appSettings)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCheckIfLoggedInUseCase(loginRepository: LoginRepository): CheckIfLoggedInUseCase {
+        return CheckIfLoggedInUseCase(loginRepository)
     }
 }

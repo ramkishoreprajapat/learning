@@ -3,6 +3,10 @@ package com.rk.bankingdemoapp.ui.app_host
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rk.bankingdemoapp.domain.core.ErrorType
+import com.rk.bankingdemoapp.domain.core.OperationResult
+import com.rk.bankingdemoapp.domain.features.app_lock.CheckAppLockUseCase
+import com.rk.bankingdemoapp.domain.features.login.CheckIfLoggedInUseCase
+import com.rk.bankingdemoapp.domain.features.onboarding.CheckIfPassedOnboardingUseCase
 import com.rk.bankingdemoapp.ui.core.error.asUiTextError
 import com.rk.bankingdemoapp.ui.navigation.model.ConditionalNavigation
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,7 +18,12 @@ import javax.inject.Inject
 
 // This is a global app's viewModel
 @HiltViewModel
-class AppViewModel @Inject constructor() : ViewModel() {
+class AppViewModel @Inject constructor(
+    private val checkIfLoggedInUseCase: CheckIfLoggedInUseCase,
+    private val checkIfPassedOnboardingUseCase: CheckIfPassedOnboardingUseCase,
+    private val checkAppLockUseCase: CheckAppLockUseCase
+) :
+    ViewModel() {
     private val _appState: MutableStateFlow<AppState> = MutableStateFlow(AppState.Loading)
     val appState = _appState.asStateFlow()
 
@@ -26,13 +35,13 @@ class AppViewModel @Inject constructor() : ViewModel() {
         when (intent) {
             AppIntent.EnterApp -> {
                 reduceAppLoading()
-                reduceAppCheck()
+                reduceAppReadyCheck()
             }
 
             AppIntent.TryPostUnlock -> {
                 val currState = _appState.value
 
-                if (currState is AppState.Ready){
+                if (currState is AppState.Ready) {
                     _appState.update {
                         currState.copy(
                             requiredUnlock = false
@@ -57,6 +66,34 @@ class AppViewModel @Inject constructor() : ViewModel() {
     private fun reduceAppLoading() {
         _appState.update {
             AppState.Loading
+        }
+    }
+
+    private fun reduceAppReadyCheck() {
+        viewModelScope.launch {
+            val isLoggedIn = OperationResult.runWrapped {
+                checkIfLoggedInUseCase.execute()
+            }
+
+            when (isLoggedIn) {
+                is OperationResult.Success -> {
+                    val hasPassedOnboarding = checkIfPassedOnboardingUseCase.execute()
+                    val appLocked = checkAppLockUseCase.execute()
+
+                    reduceAppReady(
+                        appLocked = appLocked,
+                        conditionalNavigation = ConditionalNavigation(
+                            requireLogin = !isLoggedIn.data,
+                            requireOnboarding = !hasPassedOnboarding,
+                            requireCreateAppLock = !appLocked && isLoggedIn.data
+                        )
+                    )
+                }
+
+                is OperationResult.Failure -> {
+                    reduceError(isLoggedIn.error.errorType)
+                }
+            }
         }
     }
 
